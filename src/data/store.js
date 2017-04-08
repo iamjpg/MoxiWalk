@@ -1,4 +1,5 @@
 export default {
+  mileWayPoints: [],
   teams: [
     {
       name: "There’s always another Pokemon",
@@ -16,7 +17,8 @@ export default {
         {
           name: "Cass Herrin"
         }
-      ]
+      ],
+      totalSteps: 500000
     },
     {
       name: "Really a Ninja Viking Dahlia",
@@ -34,7 +36,8 @@ export default {
         {
           name: "Kyla Searing"
         }
-      ]
+      ],
+      totalSteps: 400000
     },
     {
       name: "Carolina Contingents",
@@ -55,7 +58,8 @@ export default {
         {
           name: "Nick Van Valkenberg"
         }
-      ]
+      ],
+      totalSteps: 300000
     },
     {
       name: "Big Boppers",
@@ -73,7 +77,8 @@ export default {
         {
           name: "Esther Romanoff"
         }
-      ]
+      ],
+      totalSteps: 100000
     },
     {
       name: "The Jetsons",
@@ -88,7 +93,8 @@ export default {
         {
           name: "Melissa Anderson"
         }
-      ]
+      ],
+      totalSteps: 90000
     }
   ]
 }

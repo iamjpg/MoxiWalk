@@ -37,7 +37,7 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 20%;
+    width: 25%;
     background: #fff;
   }
   #logo {
@@ -65,6 +65,6 @@
     background: #f5f5f5;
   }
   li.selected {
-    border-left: 5px solid orange;
+    border-left: 5px solid #ffa500;
   }
 </style>

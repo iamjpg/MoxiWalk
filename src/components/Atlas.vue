@@ -38,26 +38,9 @@
 
         // Once listener for what is effectively map loaded.
         google.maps.event.addListenerOnce(window.WalkingMap, 'idle', () => {
-          this.setRoute();
           this.drawRoute();
         });
 
-      },
-      setRoute: function() {
-        this.route = {
-          label: 'Where we\'re walking',
-          request: {
-            origin: new google.maps.LatLng(47.6062095, -122.3320708),
-            destination: new google.maps.LatLng(38.8942786, -77.4310992),
-            travelMode: google.maps.DirectionsTravelMode.DRIVING
-          },
-          rendering: {
-            marker: {
-              icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
-            },
-            draggable: false
-          }
-        }
       },
       drawRoute: function() {
         const self = this;
@@ -65,15 +48,11 @@
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(this.map);
         directionsService.route({
-          origin: self.route.request.origin,
-          destination: self.route.request.destination,
-          travelMode: self.route.request.travelMode
+          origin: new google.maps.LatLng(47.6062095, -122.3320708),
+          destination: new google.maps.LatLng(38.8942786, -77.4310992),
+          travelMode: google.maps.DirectionsTravelMode.DRIVING
         }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
+          directionsDisplay.setDirections(response);
         });
       }
     }
@@ -88,7 +67,6 @@
     top: 0;
     bottom: 0;
     width: 80%;
-    background: #f5f5f5;
   }
 
   #atlas {

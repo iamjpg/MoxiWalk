@@ -9,6 +9,7 @@
 <script>
 
   import Store from '../data/store';
+  import Helpers from '../contrib/helpers';
 
   export default {
 
@@ -42,8 +43,17 @@
         // Once listener for what is effectively map loaded.
         google.maps.event.addListenerOnce(window.WalkingMap, 'idle', () => {
           this.drawRoute();
+          this.setEvents();
         });
 
+      },
+      setEvents: function() {
+        google.maps.event.addListener(window.WalkingMap, 'idle', () => {
+          this.placeProgressOnMap();
+        });
+        google.maps.event.addListener(window.WalkingMap, 'bounds_changed', () => {
+          $('.were-walking-marker').remove();
+        });
       },
       drawRoute: function() {
         const self = this;
@@ -84,6 +94,8 @@
       },
       placeProgressOnMap: function() {
         const self = this;
+
+        self.mileWayPoints = [];
 
         const origin = new google.maps.LatLng(47.6062095, -122.3320708);
 
@@ -126,16 +138,23 @@
         const self = this;
         var marker = new google.maps.Marker({
           position: { lat: self.routePath.getPath().getArray()[pointIndex].lat(), lng: self.routePath.getPath().getArray()[pointIndex].lng() },
-          map: self.map,
-          title: 'Hello World!'
         });
+        Helpers.createAndAppendDiv({
+          lat: self.routePath.getPath().getArray()[pointIndex].lat(),
+          lng: self.routePath.getPath().getArray()[pointIndex].lng(),
+          mapInstance: self.map,
+          divId: self.teams[teamIndex].name,
+          backgroundIcon: self.teams[teamIndex].backgroundIcon,
+          mapContainer: 'atlas'
+        });
+        this.markersArray.push(marker);
       }
     }
 
   }
 </script>
 
-<style scoped>
+<style>
   #atlas-container {
     position: fixed;
     right: 0;
@@ -147,5 +166,13 @@
   #atlas {
     width: 100%;
     height: 100%;
+  }
+
+  .were-walking-marker {
+    width: 34px;
+    height: 34px;
+    border-radius: 34px;
+    padding: 10px;
+    border: 3px solid #dcdcdc;
   }
 </style>

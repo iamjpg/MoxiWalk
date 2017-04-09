@@ -4,8 +4,13 @@
       <i class="material-icons">directions_walk</i>
       <p>We're Walking</p>
     </div>
+    <div id="zoom-to-teams" v-on:click="zoomToTeams()">
+      <span class="label label-primary">Zoom to Teams</span>
+    </div>
     <ul>
-      <li v-for="team in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)">{{ team.name }}</li>
+      <li v-for="team in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)" :style="returnBackground(team)">
+        {{ team.name }}
+      </li>
     </ul>
   </div>
 </template>
@@ -26,6 +31,16 @@
       toggleSelected: function(team) {
         const x = (team.selected) ? false : true;
         team.selected = x;
+      },
+      returnBackground: function(team) {
+        return `background: url('${team.backgroundIcon}') no-repeat 15px center`;
+      },
+      zoomToTeams: function() {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < this.markersArray.length; i++) {
+         bounds.extend(this.markersArray[i].getPosition());
+        }
+        window.WalkingMap.fitBounds(bounds);
       }
     }
   }
@@ -53,7 +68,7 @@
     list-style: none;
   }
   li {
-    padding: 10px 30px 10px 25px;
+    padding: 10px 30px 10px 50px;
     border-left: 5px solid #fff;
     border-bottom: 1px solid #dcdcdc;
     cursor: pointer;
@@ -66,5 +81,11 @@
   }
   li.selected {
     border-left: 5px solid #ffa500;
+  }
+  #zoom-to-teams {
+    padding: 20px;
+    margin: -64px 0 0 0;
+    text-align: center;
+    cursor: pointer;
   }
 </style>

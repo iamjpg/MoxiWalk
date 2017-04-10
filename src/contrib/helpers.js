@@ -21,11 +21,14 @@ export default {
     var div = document.createElement('div');
     div.style.position = "absolute";
     div.style.background = `#f5f5f5 url('${options.backgroundIcon}') no-repeat center center`;
-    div.id = options.divId;
+    div.id = options.divId.toLowerCase().replace(/\W/g, '');
 		div.className = 'were-walking-marker';
-		div.style.zIndex = '20000';
     div.style.top = (posTop - 12) + "px";
 		div.style.left = (posLeft) + "px";
+    div.setAttribute('data-toggle', 'popover');
+    div.setAttribute('title', options.teamName);
+    div.setAttribute('data-placement', 'top');
+    div.setAttribute('data-content', `This team has walked ${Math.round((parseInt(options.totalMiles) / 2112))} miles.`);
     document.getElementById(`${options.mapContainer}`).appendChild(div);
   }
 

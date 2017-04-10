@@ -23,6 +23,15 @@
       })
     },
 
+    watch: {
+      'updated': function() {
+        setTimeout(() => {
+          console.log('woop!')
+          this.placeProgressOnMap();
+        }, 1000)
+      }
+    },
+
     methods: {
       initMap: function() {
         const self = this;
@@ -53,6 +62,7 @@
         });
         google.maps.event.addListener(window.WalkingMap, 'bounds_changed', () => {
           $('.were-walking-marker').remove();
+          $('.popover').remove();
         });
       },
       drawRoute: function() {
@@ -95,6 +105,10 @@
       placeProgressOnMap: function() {
         const self = this;
 
+        if (!this.routePath) {
+          return false;
+        }
+
         self.mileWayPoints = [];
 
         const origin = new google.maps.LatLng(47.6062095, -122.3320708);
@@ -135,6 +149,9 @@
         return _.indexOf(array, result);
       },
       placeMarker: function(pointIndex, teamIndex) {
+        if (!this.routePath.getPath().getArray()[pointIndex]) {
+          return false;
+        }
         const self = this;
         var marker = new google.maps.Marker({
           position: { lat: self.routePath.getPath().getArray()[pointIndex].lat(), lng: self.routePath.getPath().getArray()[pointIndex].lng() },
@@ -145,9 +162,18 @@
           mapInstance: self.map,
           divId: self.teams[teamIndex].name,
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
-          mapContainer: 'atlas'
+          mapContainer: 'atlas',
+          teamName: self.teams[teamIndex].name,
+          totalMiles: self.teams[teamIndex].totalSteps
         });
         this.markersArray.push(marker);
+        this.setPopoverEvents();
+      },
+      setPopoverEvents: function() {
+        $('.were-walking-marker').popover();
+        $('.were-walking-marker').on('click', function (e) {
+          $('.were-walking-marker').not(this).popover('hide');
+        });
       }
     }
 
@@ -174,5 +200,17 @@
     border-radius: 34px;
     padding: 10px;
     border: 3px solid #dcdcdc;
+    z-index: 20000;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 3px 3px rgba(0,0,0,.06);
+    box-shadow: 0 0 5px 5px rgba(0,0,0,.01);
+  }
+
+  .were-walking-marker:hover {
+    z-index: 20001;
+  }
+
+  .popover {
+    z-index: 20002 !important;
   }
 </style>

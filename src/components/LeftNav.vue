@@ -11,6 +11,9 @@
       <li v-for="team in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)" :style="returnBackground(team)">
         {{ team.name }}
       </li>
+      <li v-on:click="initUpdateSteps()">
+        Update Steps for Teams
+      </li>
     </ul>
   </div>
 </template>
@@ -31,6 +34,9 @@
       toggleSelected: function(team) {
         const x = (team.selected) ? false : true;
         team.selected = x;
+        let teamMarkerId = team.name.toLowerCase().replace(/\W/g, '');
+        let displayProp = (team.selected) ? 'block' : 'none';
+        $(`#${teamMarkerId}`).css('display', displayProp);
       },
       returnBackground: function(team) {
         return `background: url('${team.backgroundIcon}') no-repeat 15px center`;
@@ -41,6 +47,14 @@
          bounds.extend(this.markersArray[i].getPosition());
         }
         window.WalkingMap.fitBounds(bounds);
+      },
+      initUpdateSteps: function() {
+        const p = window.prompt('Enter Password:')
+        if (p === this.dbPassword) {
+          $('.modal').modal('show');
+        } else {
+          alert('Password was incorrect.');
+        }
       }
     }
   }

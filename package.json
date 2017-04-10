@@ -11,6 +11,7 @@
     "test": "npm run unit"
   },
   "dependencies": {
+    "pouchdb-browser": "^6.1.2",
     "vue": "^2.2.2"
   },
   "devDependencies": {

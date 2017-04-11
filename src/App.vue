@@ -12,7 +12,7 @@
           <div class="modal-body">
             <div class="form-group" v-for="team in teams" :id="team.name">
               <label :for="team.name">{{team.name}}:</label>
-              <input type="text" class="form-control" :id="team.name" placeholder="Enter Steps for this team.">
+              <input type="text" class="form-control" :id="team.name" :value="team.totalSteps" placeholder="Enter Steps for this team.">
             </div>
           </div>
           <div class="modal-footer">
@@ -48,6 +48,8 @@
 
         const self = this;
 
+        $('.modal').modal('hide');
+
         window.db.allDocs().then(function (result) {
           // Promise isn't supported by all browsers; you may want to use bluebird
           return Promise.all(result.rows.map(function (row) {
@@ -62,17 +64,17 @@
               totalSteps: parseInt(o.value)
             };
             window.db.put(steps, function callback(err, result) {
-              if (!err) {
-                console.log('Successfully posted steps!');
-              } else {
-                console.log(err)
-              }
+
             });
           })
 
           setTimeout(function() {
             self.setResult();
-          }, 1000)
+            setTimeout(function() {
+              $('#zoom-to-teams').trigger('click');
+            }, 500);
+          }, 500)
+
         }).catch(function (err) {
           // error!
         });
@@ -90,16 +92,13 @@
 
       },
       setResult: function() {
-        console.log('whoot')
         const self = this;
         window.db.query(function(doc) {
-          console.log(doc)
           emit(doc);
         }).then(function(result) {
           result.rows.forEach(function(o, i) {
             self.teams.forEach(function(a, b) {
               if (a.name === o.key.title) {
-                console.log("+++", self.teams[b].totalSteps, o.key.totalSteps)
                 self.teams[b].totalSteps = parseInt(o.key.totalSteps);
               }
             })

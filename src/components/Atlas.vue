@@ -26,7 +26,6 @@
     watch: {
       'updated': function() {
         setTimeout(() => {
-          console.log('woop!')
           this.placeProgressOnMap();
         }, 1000)
       }
@@ -61,6 +60,7 @@
           this.placeProgressOnMap();
         });
         google.maps.event.addListener(window.WalkingMap, 'bounds_changed', () => {
+          $('#left-nav li').not('#left-nav li:last').addClass('selected');
           $('.were-walking-marker').remove();
           $('.popover').remove();
         });
@@ -71,7 +71,7 @@
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(this.map);
         directionsService.route({
-          origin: new google.maps.LatLng(47.6062095, -122.3320708),
+          origin: new google.maps.LatLng(47.6032365, -122.33675619999997),
           destination: new google.maps.LatLng(38.8942786, -77.4310992),
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         }, function(response, status) {
@@ -111,7 +111,7 @@
 
         self.mileWayPoints = [];
 
-        const origin = new google.maps.LatLng(47.6062095, -122.3320708);
+        const origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
 
         this.routePath.getPath().getArray().forEach((o, i) => {
           self.mileWayPoints.push(self.getDistance(origin, o))
@@ -198,12 +198,12 @@
     width: 34px;
     height: 34px;
     border-radius: 34px;
-    padding: 10px;
+    padding: 15px;
     border: 3px solid #dcdcdc;
     z-index: 20000;
     cursor: pointer;
-    -webkit-box-shadow: 0 0 3px 3px rgba(0,0,0,.06);
-    box-shadow: 0 0 5px 5px rgba(0,0,0,.01);
+    -webkit-box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
+    box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
   }
 
   .were-walking-marker:hover {

@@ -2,7 +2,7 @@
   <div id="left-nav">
     <div id="logo">
       <i class="material-icons">directions_walk</i>
-      <p>We're Walking</p>
+      <p>Moxi Race 2017</p>
     </div>
     <div id="zoom-to-teams" v-on:click="zoomToTeams()">
       <span class="label label-primary">Zoom to Teams</span>

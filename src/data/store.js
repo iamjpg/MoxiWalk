@@ -2,6 +2,7 @@ export default {
   updated: new Date(),
   mileWayPoints: [],
   markersArray: [],
+  markersStartEndArray: [],
   teams: [
     {
       name: "There’s always another Pokemon",

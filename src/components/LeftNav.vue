@@ -49,8 +49,7 @@
         window.WalkingMap.fitBounds(bounds);
       },
       initUpdateSteps: function() {
-        const p = window.prompt('Enter Password:')
-        if (p === this.dbPassword) {
+        if (window.prompt('Enter Password:')) {
           $('.modal').modal('show');
         } else {
           alert('Password was incorrect.');
@@ -94,7 +93,15 @@
     background: #f5f5f5;
   }
   li.selected {
-    border-left: 5px solid #ffa500;
+    border-left: 5px solid #f505a6;
+  }
+  li:last-child {
+    border-bottom: 0;
+    margin-top: 50px;
+    padding-left: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
   }
   #zoom-to-teams {
     padding: 20px;

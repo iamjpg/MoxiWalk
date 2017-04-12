@@ -57,11 +57,12 @@
       },
       setEvents: function() {
         google.maps.event.addListener(window.WalkingMap, 'idle', () => {
+          this.setStartEndMarkers();
           this.placeProgressOnMap();
         });
         google.maps.event.addListener(window.WalkingMap, 'bounds_changed', () => {
           $('#left-nav li').not('#left-nav li:last').addClass('selected');
-          $('.were-walking-marker').remove();
+          $('.were-walking-marker, .start-end-marker').remove();
           $('.popover').remove();
         });
       },
@@ -78,7 +79,7 @@
           // directionsDisplay.setDirections(response);
           self.routePath = new google.maps.Polyline({
             path: [],
-            strokeColor: '#ffa500',
+            strokeColor: '#f505a6',
             strokeWeight: 6
           })
           var bounds = new google.maps.LatLngBounds();
@@ -96,7 +97,6 @@
 
           self.routePath.setMap(self.map);
           self.map.fitBounds(bounds);
-          self.placeProgressOnMap();
         });
       },
       convertStepsToMiles: function(steps) {
@@ -108,6 +108,8 @@
         if (!this.routePath) {
           return false;
         }
+
+        $('.were-walking-marker').remove();
 
         self.mileWayPoints = [];
 
@@ -170,10 +172,44 @@
         this.setPopoverEvents();
       },
       setPopoverEvents: function() {
-        $('.were-walking-marker').popover();
-        $('.were-walking-marker').on('click', function (e) {
-          $('.were-walking-marker').not(this).popover('hide');
+        $('.were-walking-marker, .start-end-marker').popover();
+        $('.were-walking-marker, .start-end-marker').on('click', function (e) {
+          $('.were-walking-marker, .start-end-marker').not(this).popover('hide');
         });
+      },
+      setStartEndMarkers: function() {
+        const self = this;
+        var startMarker = new google.maps.Marker({
+          position: { lat: 47.6032365, lng: -122.33675619999997 },
+        });
+        var endMarker = new google.maps.Marker({
+          position: { lat: 38.8942786, lng: -77.4310992 },
+        });
+        Helpers.createAndAppendDiv({
+          lat: 47.6032365,
+          lng: -122.33675619999997,
+          mapInstance: self.map,
+          divId: 'startMarker',
+          backgroundIcon: '',
+          mapContainer: 'atlas',
+          teamName: 'Start',
+          content: '815 Western Ave',
+          className: 'start-end-marker'
+        });
+        Helpers.createAndAppendDiv({
+          lat: 38.8942786,
+          lng: -77.4310992,
+          mapInstance: self.map,
+          divId: 'endMarker',
+          backgroundIcon: '',
+          mapContainer: 'atlas',
+          teamName: 'End',
+          content: 'Chantilly, VA',
+          className: 'start-end-marker'
+        });
+        this.markersStartEndArray.push(startMarker);
+        this.markersStartEndArray.push(endMarker);
+        this.setPopoverEvents();
       }
     }
 
@@ -212,5 +248,13 @@
 
   .popover {
     z-index: 20002 !important;
+  }
+
+  .start-end-marker {
+    width: 20px;
+    height: 20px;
+    background: #f505a6 !important;
+    border-radius: 20px;
+    z-index: 19999;
   }
 </style>

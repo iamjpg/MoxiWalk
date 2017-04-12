@@ -69,10 +69,7 @@
           })
 
           setTimeout(function() {
-            self.setResult();
-            setTimeout(function() {
-              $('#zoom-to-teams').trigger('click');
-            }, 500);
+            self.setResult(true);
           }, 500)
 
         }).catch(function (err) {
@@ -91,7 +88,7 @@
         this.setResult();
 
       },
-      setResult: function() {
+      setResult: function(zoom=false) {
         const self = this;
         window.db.query(function(doc) {
           emit(doc);
@@ -104,6 +101,10 @@
             })
           })
           self.updated = new Date();
+          if (zoom) {
+            $('.were-walking-marker').remove();
+            $('#zoom-to-teams').trigger('click');
+          }
         }).catch(function (err) {
           // you'll get an error here
         })

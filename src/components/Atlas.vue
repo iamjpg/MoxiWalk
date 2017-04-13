@@ -25,9 +25,7 @@
 
     watch: {
       'updated': function() {
-        setTimeout(() => {
-          this.placeProgressOnMap();
-        }, 1000)
+        this.placeProgressOnMap();
       }
     },
 
@@ -123,7 +121,6 @@
           let index = self.getClosestWayPointIndex(self.mileWayPoints, self.convertStepsToMiles(o.totalSteps))
           self.placeMarker(index, i);
         })
-        // window.foo = this.mileWayPoints;
       },
       getDistance: function(p1, p2) {
         var rad = function(x) {

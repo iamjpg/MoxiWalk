@@ -30,6 +30,10 @@ export default {
     div.setAttribute('data-placement', 'top');
     div.setAttribute('data-content', options.content || `This team has walked ${Math.round((parseInt(options.totalMiles) / 2112))} miles.`);
     document.getElementById(`${options.mapContainer}`).appendChild(div);
+  },
+
+  log: function(obj) {
+    console.log(JSON.parse(JSON.stringify(obj)))
   }
 
 }

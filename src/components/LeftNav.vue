@@ -67,6 +67,9 @@
     bottom: 0;
     width: 25%;
     background: #fff;
+    -webkit-box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
+    box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
+    z-index: 100;
   }
   #logo {
     padding: 50px 0;

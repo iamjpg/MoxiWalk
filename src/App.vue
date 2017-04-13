@@ -10,10 +10,12 @@
             <h4 class="modal-title">Enter Values in Steps</h4>
           </div>
           <div class="modal-body">
-            <div class="form-group" v-for="team in teams" :id="team.name">
-              <label :for="team.name">{{team.name}}:</label>
-              <input type="text" class="form-control" :id="team.name" :value="team.totalSteps" placeholder="Enter Steps for this team.">
-            </div>
+            <form id="steps-form">
+              <div class="form-group" v-for="(team, index) in teams" :id="team.name">
+                <label :for="team.name">{{team.name}}:</label>
+                <input type="text" v-bind:name="(index+1)" class="form-control team_steps" :id="team.name" :model="team.totalSteps" :value="team.totalSteps" placeholder="Enter Steps for this team.">
+              </div>
+            </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -30,6 +32,7 @@
   import LeftNav from './components/LeftNav';
   import Atlas from './components/Atlas';
   import Store from './data/store';
+  import * as Env from './const/env';
 
   export default {
     name: 'app',
@@ -50,32 +53,21 @@
 
         $('.modal').modal('hide');
 
-        window.db.allDocs().then(function (result) {
-          // Promise isn't supported by all browsers; you may want to use bluebird
-          return Promise.all(result.rows.map(function (row) {
-            return db.remove(row.id, row.value.rev);
-          }));
-        }).then(function () {
-          $('.form-control').toArray().forEach(function(o, i) {
-            var steps = {
-              _id: Math.random().toString(36).substring(7),
-              timestamp: new Date().toISOString(),
-              title: o.id,
-              totalSteps: parseInt(o.value)
-            };
-            window.db.put(steps, function callback(err, result) {
-
-            });
-          })
-
-          setTimeout(function() {
-            self.setResult(true);
-          }, 500)
-
-        }).catch(function (err) {
-          // error!
-        });
-
+        $.ajax({
+          url: `${Env.API_BASE_URL}/add_steps`,
+          method: 'POST',
+          data: $('#steps-form').serialize(),
+          success: function(res) {
+            res.forEach((o, i) => {
+              Store.teams[i].totalSteps = o.team_steps
+            })
+            $('.were-walking-marker').remove();
+            self.updated = new Date();
+          },
+          error: function(x,y,z) {
+            console.log(x,y,z)
+          }
+        })
 
 
       },
@@ -83,31 +75,12 @@
 
         const self = this;
 
-        // if (typeof window.db === 'undefined') { return false; }
-
         this.setResult();
 
       },
       setResult: function(zoom=false) {
         const self = this;
-        window.db.query(function(doc) {
-          emit(doc);
-        }).then(function(result) {
-          result.rows.forEach(function(o, i) {
-            self.teams.forEach(function(a, b) {
-              if (a.name === o.key.title) {
-                self.teams[b].totalSteps = parseInt(o.key.totalSteps);
-              }
-            })
-          })
-          self.updated = new Date();
-          if (zoom) {
-            $('.were-walking-marker').remove();
-            $('#zoom-to-teams').trigger('click');
-          }
-        }).catch(function (err) {
-          // you'll get an error here
-        })
+        // Set results here
       }
     }
   }

@@ -70,6 +70,7 @@
     -webkit-box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
     box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
     z-index: 100;
+    overflow-y: auto;
   }
   #logo {
     padding: 50px 0;
@@ -99,11 +100,12 @@
     border-left: 5px solid #f505a6;
   }
   li:last-child {
-    border-bottom: 0;
+    border-top: 1px solid #dcdcdc;
+    border-right: 0;
+    border-bottom: 1px solid #dcdcdc;
+    border-left: 0;
     margin-top: 50px;
     padding-left: 20px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
   }
   #zoom-to-teams {

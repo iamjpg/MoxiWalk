@@ -28,7 +28,7 @@ export default {
     div.setAttribute('data-toggle', 'popover');
     div.setAttribute('title', options.teamName);
     div.setAttribute('data-placement', 'top');
-    div.setAttribute('data-content', options.content || `This team has walked ${Math.round((parseInt(options.totalMiles) / 2112))} miles.`);
+    div.setAttribute('data-content', options.content || `This team has walked ${options.totalMiles} miles.`);
     document.getElementById(`${options.mapContainer}`).appendChild(div);
   },
 

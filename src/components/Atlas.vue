@@ -118,7 +118,7 @@
         });
 
         this.teams.forEach((o, i) => {
-          let index = self.getClosestWayPointIndex(self.mileWayPoints, self.convertStepsToMiles(o.totalSteps))
+          let index = self.getClosestWayPointIndex(self.mileWayPoints, o.totalSteps)
           self.placeMarker(index, i);
         })
       },

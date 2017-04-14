@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import PouchDB from 'pouchdb-browser';
 import Store from './data/store';
 import Helpers from './contrib/helpers';
 import * as Env from './const/env';

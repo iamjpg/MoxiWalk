@@ -49,7 +49,7 @@
         window.WalkingMap.fitBounds(bounds);
       },
       initUpdateSteps: function() {
-        if (window.prompt('Enter Password:')) {
+        if (window.prompt('Enter Password:') === Store.dbPassword) {
           $('.modal').modal('show');
         } else {
           alert('Password was incorrect.');

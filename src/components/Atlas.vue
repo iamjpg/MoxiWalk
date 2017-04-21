@@ -177,14 +177,14 @@
       setStartEndMarkers: function() {
         const self = this;
         var startMarker = new google.maps.Marker({
-          position: { lat: 47.6032365, lng: -122.33675619999997 },
+          position: { lat: 47.603323768014164, lng: -122.3365107178688 },
         });
         var endMarker = new google.maps.Marker({
           position: { lat: 38.8942786, lng: -77.4310992 },
         });
         Helpers.createAndAppendDiv({
-          lat: 47.6032365,
-          lng: -122.33675619999997,
+          lat: 47.603323768014164,
+          lng: -122.3365107178688,
           mapInstance: self.map,
           divId: 'startMarker',
           backgroundIcon: '',
@@ -250,8 +250,12 @@
   .start-end-marker {
     width: 20px;
     height: 20px;
-    background: #f505a6 !important;
+    border: 6px solid #f5f5f5;
+    background: #05a6f5 !important;
     border-radius: 20px;
     z-index: 19999;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
+    box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
   }
 </style>

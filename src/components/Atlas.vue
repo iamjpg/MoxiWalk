@@ -71,7 +71,7 @@
         directionsDisplay.setMap(this.map);
         directionsService.route({
           origin: new google.maps.LatLng(47.6032365, -122.33675619999997),
-          destination: new google.maps.LatLng(38.8942786, -77.4310992),
+          destination: new google.maps.LatLng(28.417839, -81.581235),
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         }, function(response, status) {
           // directionsDisplay.setDirections(response);
@@ -118,7 +118,7 @@
         });
 
         this.teams.forEach((o, i) => {
-          let index = self.getClosestWayPointIndex(self.mileWayPoints, o.totalSteps)
+          let index = self.getClosestWayPointIndex(self.mileWayPoints, parseFloat((self.teams[i].totalSteps / 2112).toFixed(2)))
           self.placeMarker(index, i);
         })
       },
@@ -163,7 +163,7 @@
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
           mapContainer: 'atlas',
           teamName: self.teams[teamIndex].name,
-          totalMiles: self.teams[teamIndex].totalSteps
+          totalMiles: parseFloat((self.teams[teamIndex].totalSteps / 2112).toFixed(2))
         });
         this.markersArray.push(marker);
         this.setPopoverEvents();
@@ -194,14 +194,14 @@
           className: 'start-end-marker'
         });
         Helpers.createAndAppendDiv({
-          lat: 38.8942786,
-          lng: -77.4310992,
+          lat: 28.417839,
+          lng: -81.581235,
           mapInstance: self.map,
           divId: 'endMarker',
           backgroundIcon: '',
           mapContainer: 'atlas',
           teamName: 'End',
-          content: 'Chantilly, VA',
+          content: 'Disney World',
           className: 'start-end-marker'
         });
         this.markersStartEndArray.push(startMarker);

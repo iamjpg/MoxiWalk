@@ -2,7 +2,8 @@
   <div id="left-nav">
     <div id="logo">
       <i class="material-icons">directions_walk</i>
-      <p>Moxi Race 2017</p>
+      <p>Moxi Race</p>
+      <p>We goin' to Disney World!</p>
     </div>
     <div id="zoom-to-teams" v-on:click="zoomToTeams()">
       <span class="label label-primary">Zoom to Teams</span>
@@ -11,8 +12,14 @@
       <li v-for="team in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)" :style="returnBackground(team)">
         {{ team.name }}
       </li>
-      <li v-on:click="initUpdateSteps()">
-        Update Steps for Teams
+      <li>
+        <table id="credz">
+          <tr>
+            <td>Made with </td>
+            <td><i class="material-icons">favorite</i> </td>
+            <td>by JP.</td>
+          </tr>
+        </table>
       </li>
     </ul>
   </div>
@@ -113,5 +120,16 @@
     margin: -64px 0 0 0;
     text-align: center;
     cursor: pointer;
+  }
+
+  #credz {
+    margin: auto;
+  }
+
+  #credz td {
+    padding: 0 5px;
+  }
+  #credz td:nth-child(2) {
+    color: #f505a6;
   }
 </style>

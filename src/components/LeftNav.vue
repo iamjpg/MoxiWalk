@@ -1,7 +1,7 @@
 <template>
   <div id="left-nav">
     <div id="logo">
-      <i class="material-icons">directions_walk</i>
+      <img src="https://i.imgur.com/Fus82MF.jpg" width="100%" id="img-disney">
       <p>Moxi Race</p>
       <p>We goin' to Disney World!</p>
     </div>
@@ -20,6 +20,7 @@
             <td>by JP.</td>
           </tr>
         </table>
+        <p class="small">(Disney drawing "borrowed" from <a href="https://dribbble.com/breckten" target="_blank">this dude</a>.)</p>
       </li>
     </ul>
   </div>
@@ -69,18 +70,18 @@
 <style scoped>
   #left-nav {
     position: fixed;
+    background: #fff;
     left: 0;
     top: 0;
     bottom: 0;
     width: 25%;
-    background: #fff;
     -webkit-box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
     box-shadow: 5px 0 10px 0 rgba(0,0,0,.3);
     z-index: 100;
     overflow-y: auto;
   }
   #logo {
-    padding: 50px 0;
+    padding: 0 0 50px 0;
     text-align: center;
   }
   #logo i {
@@ -131,5 +132,10 @@
   }
   #credz td:nth-child(2) {
     color: #f505a6;
+  }
+  .small {
+    font-size: 11px;
+    margin-bottom: 0;
+    text-align: center;
   }
 </style>

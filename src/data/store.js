@@ -14,15 +14,41 @@ export default {
   ],
   dbPassword: 'MoxiSteps2017',
   routes: [
-    {
-      name: '815 Western Ave',
-      lat: 47.6032365,
-      lng: -122.33675619999997
-    },
-    {
-      name: 'North Cascades National Park',
-      lat: 48.6661903,
-      lng: -121.26676789999999
-    }
+    [
+      {
+        name: '815 Western Ave',
+        lat: 47.6032365,
+        lng: -122.33675619999997
+      },
+      {
+        name: 'North Cascades National Park',
+        lat: 48.6661903,
+        lng: -121.26676789999999
+      }
+    ],
+    [
+      {
+        name: 'North Cascades National Park',
+        lat: 48.6661903,
+        lng: -121.26676789999999
+      },
+      {
+        name: 'Glacier National Park',
+        lat: 48.4949755,
+        lng: -113.9810756
+      }
+    ],
+    [
+      {
+        name: 'Glacier National Park',
+        lat: 48.4949755,
+        lng: -113.9810756
+      },
+      {
+        name: 'YellowStone National Park',
+        lat: 44.4154952,
+        lng: -110.57548459999998
+      }
+    ]
   ]
 }

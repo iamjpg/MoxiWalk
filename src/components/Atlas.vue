@@ -76,19 +76,25 @@
           strokeWeight: 6
         });
         this.routes.forEach((o, i) => {
-          console.log(o)
+          //console.log(JSON.parse(JSON.stringify(o)))
+          console.log(o[0].lat, o[0].lng)
+          console.log(o[1].lat, o[1].lng)
+          console.log('-------')
+          directionsService.route({
+            origin: new google.maps.LatLng(o[0].lat, o[0].lng),
+            destination: new google.maps.LatLng(o[1].lat, o[1].lng),
+            travelMode: google.maps.DirectionsTravelMode.WALKING
+          }, function(response, status) {
+            console.log(response)
+            var legs = response.routes[0].legs;
+            response.routes[0].legs.forEach((a, b) => {
+              self.legs.push(a)
+            })
+          });
         })
-        directionsService.route({
-          origin: new google.maps.LatLng(47.6032365, -122.33675619999997),
-          destination: new google.maps.LatLng(48.6661903, -121.26676789999999),
-          travelMode: google.maps.DirectionsTravelMode.DRIVING
-        }, function(response, status) {
-          var legs = response.routes[0].legs;
-          response.routes[0].legs.forEach((o, i) => {
-            self.legs.push(o)
-          })
-          self.finishRoute();
-        });
+        setTimeout(() => {
+          this.finishRoute();
+        }, 3000)
       },
       finishRoute: function () {
         let self = this;

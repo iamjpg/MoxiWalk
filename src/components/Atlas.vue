@@ -69,11 +69,15 @@
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(this.map);
+        this.routes.forEach((o, i) => {
+          console.log(o)
+        })
         directionsService.route({
           origin: new google.maps.LatLng(47.6032365, -122.33675619999997),
-          destination: new google.maps.LatLng(28.417839, -81.581235),
+          destination: new google.maps.LatLng(48.6661903, -121.26676789999999),
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         }, function(response, status) {
+          console.log(response)
           // directionsDisplay.setDirections(response);
           self.routePath = new google.maps.Polyline({
             path: [],

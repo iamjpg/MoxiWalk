@@ -69,6 +69,12 @@
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(this.map);
+        this.legs = [];
+        this.routePath = new google.maps.Polyline({
+          path: [],
+          strokeColor: '#f505a6',
+          strokeWeight: 6
+        });
         this.routes.forEach((o, i) => {
           console.log(o)
         })
@@ -77,29 +83,29 @@
           destination: new google.maps.LatLng(48.6661903, -121.26676789999999),
           travelMode: google.maps.DirectionsTravelMode.DRIVING
         }, function(response, status) {
-          console.log(response)
-          // directionsDisplay.setDirections(response);
-          self.routePath = new google.maps.Polyline({
-            path: [],
-            strokeColor: '#f505a6',
-            strokeWeight: 6
-          })
-          var bounds = new google.maps.LatLngBounds();
           var legs = response.routes[0].legs;
-          for (let i = 0; i < legs.length; i++) {
-            var steps = legs[i].steps;
-            for (let j = 0; j < steps.length; j++) {
-              var nextSegment = steps[j].path;
-              for (let k = 0; k < nextSegment.length; k++) {
-                self.routePath.getPath().push(nextSegment[k]);
-                bounds.extend(nextSegment[k]);
-              }
+          response.routes[0].legs.forEach((o, i) => {
+            self.legs.push(o)
+          })
+          self.finishRoute();
+        });
+      },
+      finishRoute: function () {
+        let self = this;
+        let bounds = new google.maps.LatLngBounds();
+        let legs = this.legs;
+        for (let i = 0; i < legs.length; i++) {
+          var steps = legs[i].steps;
+          for (let j = 0; j < steps.length; j++) {
+            var nextSegment = steps[j].path;
+            for (let k = 0; k < nextSegment.length; k++) {
+              self.routePath.getPath().push(nextSegment[k]);
+              bounds.extend(nextSegment[k]);
             }
           }
-
-          self.routePath.setMap(self.map);
-          self.map.fitBounds(bounds);
-        });
+        }
+        this.routePath.setMap(self.map);
+        this.map.fitBounds(bounds);
       },
       convertStepsToMiles: function(steps) {
         return parseInt(steps) / 2112;

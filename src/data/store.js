@@ -1,4 +1,5 @@
 export default {
+  polyLengthInMilesMath: 0,
   updated: new Date(),
   mileWayPoints: [],
   markersArray: [],

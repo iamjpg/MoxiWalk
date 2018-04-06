@@ -83,13 +83,13 @@
             destination: new google.maps.LatLng(this.routes[count][1].lat, this.routes[count][1].lng),
             travelMode: google.maps.DirectionsTravelMode.WALKING
           }, function(response, status) {
-            console.log(response)
+            //console.log(response)
             response.routes[0].legs.forEach((a, b) => {
               self.legs.push(a)
             })
           });
           count = count + 1;
-          console.log(count, this.routes.length)
+          //console.log(count, this.routes.length)
           if (count >= this.routes.length) {
             clearInterval(googleInterval);
             setTimeout(() => { this.finishRoute(); }, 500);
@@ -112,6 +112,8 @@
         }
         this.routePath.setMap(self.map);
         this.map.fitBounds(bounds);
+        const polyLengthInMeters = google.maps.geometry.spherical.computeLength(this.routePath.getPath().getArray());
+        this.polyLengthInMiles = Math.round(polyLengthInMeters* 0.00062137);
       },
       convertStepsToMiles: function(steps) {
         return parseInt(steps) / 2112;
@@ -217,7 +219,7 @@
           backgroundIcon: '',
           mapContainer: 'atlas',
           teamName: 'End',
-          content: 'Grand Canyon National Park',
+          content: 'Grand Canyon National Park - 2,399 Miles!',
           className: 'start-end-marker'
         });
         this.markersStartEndArray.push(startMarker);

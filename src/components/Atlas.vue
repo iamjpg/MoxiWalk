@@ -73,28 +73,28 @@
         this.routePath = new google.maps.Polyline({
           path: [],
           strokeColor: '#f505a6',
-          strokeWeight: 6
+          strokeWeight: 2
         });
-        this.routes.forEach((o, i) => {
-          //console.log(JSON.parse(JSON.stringify(o)))
-          console.log(o[0].lat, o[0].lng)
-          console.log(o[1].lat, o[1].lng)
-          console.log('-------')
+
+        let count = 0;
+        let googleInterval = setInterval(() => {
           directionsService.route({
-            origin: new google.maps.LatLng(o[0].lat, o[0].lng),
-            destination: new google.maps.LatLng(o[1].lat, o[1].lng),
+            origin: new google.maps.LatLng(this.routes[count][0].lat, this.routes[count][0].lng),
+            destination: new google.maps.LatLng(this.routes[count][1].lat, this.routes[count][1].lng),
             travelMode: google.maps.DirectionsTravelMode.WALKING
           }, function(response, status) {
             console.log(response)
-            var legs = response.routes[0].legs;
             response.routes[0].legs.forEach((a, b) => {
               self.legs.push(a)
             })
           });
-        })
-        setTimeout(() => {
-          this.finishRoute();
-        }, 3000)
+          count = count + 1;
+          console.log(count, this.routes.length)
+          if (count >= this.routes.length) {
+            clearInterval(googleInterval);
+            setTimeout(() => { this.finishRoute(); }, 500);
+          }
+        }, 500);
       },
       finishRoute: function () {
         let self = this;
@@ -210,14 +210,14 @@
           className: 'start-end-marker'
         });
         Helpers.createAndAppendDiv({
-          lat: 28.417839,
-          lng: -81.581235,
+          lat: 36.1069652,
+          lng: -112.1129972,
           mapInstance: self.map,
           divId: 'endMarker',
           backgroundIcon: '',
           mapContainer: 'atlas',
           teamName: 'End',
-          content: 'Disney World',
+          content: 'Grand Canyon National Park',
           className: 'start-end-marker'
         });
         this.markersStartEndArray.push(startMarker);

@@ -49,6 +49,90 @@ export default {
         lat: 44.4154952,
         lng: -110.57548459999998
       }
+    ],
+    [
+      {
+        name: 'YellowStone National Park',
+        lat: 44.4154952,
+        lng: -110.57548459999998
+      },
+      {
+        name: 'Grand Teton National Park',
+        lat: 43.7514858,
+        lng: -110.72231779999998
+      }
+    ],
+    [
+      {
+        name: 'Grand Teton National Park',
+        lat: 43.7514858,
+        lng: -110.72231779999998
+      },
+      {
+        name: 'Great Basin National Park',
+        lat: 38.9133948,
+        lng: -114.1767668
+      }
+    ],
+    [
+      {
+        name: 'Great Basin National Park',
+        lat: 38.9133948,
+        lng: -114.1767668
+      },
+      {
+        name: 'Arches National Park',
+        lat: 38.77151020000001,
+        lng: -109.57749490000003
+      }
+    ],
+    [
+      {
+        name: 'Arches National Park',
+        lat: 38.77151020000001,
+        lng: -109.57749490000003
+      },
+      {
+        name: 'Canyonlands National Park',
+        lat: 38.3268693,
+        lng: -109.8782592
+      }
+    ],
+    [
+      {
+        name: 'Canyonlands National Park',
+        lat: 38.3268693,
+        lng: -109.8782592
+      },
+      {
+        name: 'Capitol Reef National Park',
+        lat: 38.1323594,
+        lng: -111.32600259999998
+      }
+    ],
+    [
+      {
+        name: 'Capitol Reef National Park',
+        lat: 38.1323594,
+        lng: -111.32600259999998
+      },
+      {
+        name: 'Bryce Canyon National Park',
+        lat: 37.5930377,
+        lng: -112.18708950000001
+      }
+    ],
+    [
+      {
+        name: 'Bryce Canyon National Park',
+        lat: 37.5930377,
+        lng: -112.18708950000001
+      },
+      {
+        name: 'Grand Canyon National Park',
+        lat: 36.1069652,
+        lng: -112.1129972
+      }
     ]
   ]
 }

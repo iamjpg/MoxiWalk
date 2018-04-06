@@ -1,15 +1,16 @@
 <template>
   <div id="left-nav">
     <div id="logo">
-      <img src="https://i.imgur.com/Fus82MF.jpg" width="100%" id="img-disney">
-      <p>Moxi Race</p>
-      <p>We goin' to Disney World!</p>
+      <div>
+        <p>Moxi Race</p>
+        <p>National Park Tour!</p>
+      </div>
     </div>
     <div id="zoom-to-teams" v-on:click="zoomToTeams()">
       <span class="label label-primary">Zoom to Teams</span>
     </div>
     <ul>
-      <li v-for="team in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)" :style="returnBackground(team)">
+      <li v-for="(team, index) in teams" :class="returnSelected(team)" v-on:click="toggleSelected(team)" :style="returnBackground(team)" :key="`${index}-team`">
         {{ team.name }}
       </li>
       <li>
@@ -20,7 +21,6 @@
             <td>by JP.</td>
           </tr>
         </table>
-        <p class="small">(Disney drawing "borrowed" from <a href="https://dribbble.com/breckten" target="_blank">this dude</a>.)</p>
       </li>
     </ul>
   </div>
@@ -81,8 +81,25 @@
     overflow-y: auto;
   }
   #logo {
-    padding: 0 0 50px 0;
+    position: relative;
+    background: url('https://i.imgur.com/KiaxIql.jpg') no-repeat center center;
+    height: 350px;
     text-align: center;
+  }
+  #logo div {
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    color: #fff;
+    font-size: 24px;
+    text-shadow: 
+    1px 0px 1px #ccc, 0px 1px 1px #000, 
+    2px 1px 1px #ccc, 1px 2px 1px #000,
+    3px 2px 1px #ccc, 2px 3px 1px #000,
+    4px 3px 1px #ccc, 3px 4px 1px #000,
+    5px 4px 1px #ccc, 4px 5px 1px #000,
+    6px 5px 1px #ccc, 5px 6px 1px #000,
+    7px 6px 1px #ccc;
   }
   #logo i {
     font-size: 50px;
@@ -118,7 +135,6 @@
   }
   #zoom-to-teams {
     padding: 20px;
-    margin: -64px 0 0 0;
     text-align: center;
     cursor: pointer;
   }
@@ -134,7 +150,7 @@
     color: #f505a6;
   }
   .small {
-    font-size: 11px;
+    font-size: 10px;
     margin-bottom: 0;
     text-align: center;
   }

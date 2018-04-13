@@ -94,7 +94,7 @@
             clearInterval(googleInterval);
             setTimeout(() => { this.finishRoute(); }, 500);
           }
-        }, 500);
+        }, 800);
       },
       finishRoute: function () {
         let self = this;
@@ -127,7 +127,7 @@
 
         $('.were-walking-marker').remove();
 
-        self.mileWayPoints = [];
+        self.mileWayPoints = window.mileWayPoints = [];
 
         const origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
 
@@ -136,8 +136,18 @@
         });
 
         this.teams.forEach((o, i) => {
-          let index = self.getClosestWayPointIndex(self.mileWayPoints, parseFloat((self.teams[i].totalSteps / 2112).toFixed(2)))
-          self.placeMarker(index, i);
+          //let index = self.getClosestWayPointIndex(self.mileWayPoints, parseFloat(self.teams[i].totalSteps))
+          self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
+          //self.placeMarker(index, i);
+        })
+      },
+      getClosestPoint: function(totalMiles, teamIndex) {
+        const self = this;
+        $(this.mileWayPoints).each((i, o) => {
+          if (parseInt(totalMiles) >= (parseInt(o) - 10) && parseInt(totalMiles) <= (parseInt(o) + 10)) {
+            self.placeMarker(i, teamIndex);
+            return false;
+          }
         })
       },
       getDistance: function(p1, p2) {

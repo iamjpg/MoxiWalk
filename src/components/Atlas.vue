@@ -92,6 +92,7 @@
           //console.log(count, this.routes.length)
           if (count >= this.routes.length) {
             clearInterval(googleInterval);
+            this.loader = false;
             setTimeout(() => { this.finishRoute(); }, 500);
           }
         }, 800);
@@ -191,7 +192,7 @@
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
           mapContainer: 'atlas',
           teamName: self.teams[teamIndex].name,
-          totalMiles: parseFloat((self.teams[teamIndex].totalSteps / 2112).toFixed(2))
+          totalMiles: parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
         });
         this.markersArray.push(marker);
         this.setPopoverEvents();

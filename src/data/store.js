@@ -1,4 +1,5 @@
 export default {
+  loader: true,
   polyLengthInMilesMath: 0,
   updated: new Date(),
   mileWayPoints: [],

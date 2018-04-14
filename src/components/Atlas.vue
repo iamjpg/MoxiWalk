@@ -25,9 +25,7 @@
 
     watch: {
       'updated': function() {
-        setTimeout(() => {
-          this.placeProgressOnMap();
-        }, 1000)
+        this.placeProgressOnMap();
       }
     },
 
@@ -57,11 +55,12 @@
       },
       setEvents: function() {
         google.maps.event.addListener(window.WalkingMap, 'idle', () => {
+          this.setStartEndMarkers();
           this.placeProgressOnMap();
         });
         google.maps.event.addListener(window.WalkingMap, 'bounds_changed', () => {
           $('#left-nav li').not('#left-nav li:last').addClass('selected');
-          $('.were-walking-marker').remove();
+          $('.were-walking-marker, .start-end-marker').remove();
           $('.popover').remove();
         });
       },
@@ -70,34 +69,52 @@
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(this.map);
-        directionsService.route({
-          origin: new google.maps.LatLng(47.6032365, -122.33675619999997),
-          destination: new google.maps.LatLng(38.8942786, -77.4310992),
-          travelMode: google.maps.DirectionsTravelMode.DRIVING
-        }, function(response, status) {
-          // directionsDisplay.setDirections(response);
-          self.routePath = new google.maps.Polyline({
-            path: [],
-            strokeColor: '#ffa500',
-            strokeWeight: 6
-          })
-          var bounds = new google.maps.LatLngBounds();
-          var legs = response.routes[0].legs;
-          for (let i = 0; i < legs.length; i++) {
-            var steps = legs[i].steps;
-            for (let j = 0; j < steps.length; j++) {
-              var nextSegment = steps[j].path;
-              for (let k = 0; k < nextSegment.length; k++) {
-                self.routePath.getPath().push(nextSegment[k]);
-                bounds.extend(nextSegment[k]);
-              }
+        this.legs = [];
+        this.routePath = new google.maps.Polyline({
+          path: [],
+          strokeColor: '#f505a6',
+          strokeWeight: 2
+        });
+
+        let count = 0;
+        let googleInterval = setInterval(() => {
+          directionsService.route({
+            origin: new google.maps.LatLng(this.routes[count][0].lat, this.routes[count][0].lng),
+            destination: new google.maps.LatLng(this.routes[count][1].lat, this.routes[count][1].lng),
+            travelMode: google.maps.DirectionsTravelMode.WALKING
+          }, function(response, status) {
+            //console.log(response)
+            response.routes[0].legs.forEach((a, b) => {
+              self.legs.push(a)
+            })
+          });
+          count = count + 1;
+          //console.log(count, this.routes.length)
+          if (count >= this.routes.length) {
+            clearInterval(googleInterval);
+            this.loader = false;
+            setTimeout(() => { this.finishRoute(); }, 500);
+          }
+        }, 800);
+      },
+      finishRoute: function () {
+        let self = this;
+        let bounds = new google.maps.LatLngBounds();
+        let legs = this.legs;
+        for (let i = 0; i < legs.length; i++) {
+          var steps = legs[i].steps;
+          for (let j = 0; j < steps.length; j++) {
+            var nextSegment = steps[j].path;
+            for (let k = 0; k < nextSegment.length; k++) {
+              self.routePath.getPath().push(nextSegment[k]);
+              bounds.extend(nextSegment[k]);
             }
           }
-
-          self.routePath.setMap(self.map);
-          self.map.fitBounds(bounds);
-          self.placeProgressOnMap();
-        });
+        }
+        this.routePath.setMap(self.map);
+        this.map.fitBounds(bounds);
+        const polyLengthInMeters = google.maps.geometry.spherical.computeLength(this.routePath.getPath().getArray());
+        this.polyLengthInMiles = Math.round(polyLengthInMeters* 0.00062137);
       },
       convertStepsToMiles: function(steps) {
         return parseInt(steps) / 2112;
@@ -109,19 +126,46 @@
           return false;
         }
 
-        self.mileWayPoints = [];
+        $('.were-walking-marker').remove();
 
-        const origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
+        self.mileWayPoints = window.mileWayPoints = [];
+
+        let origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
+        let distance = 0;
+
+        self.mileWayPoints.push(self.getDistance(origin, {
+          lat: function() {
+            return 47.6032365
+          },
+          lng: function() {
+            return -122.33675619999997
+          }
+        }))
 
         this.routePath.getPath().getArray().forEach((o, i) => {
-          self.mileWayPoints.push(self.getDistance(origin, o))
+          let tmp_distance = self.getDistance(origin, o);
+          distance = tmp_distance + self.mileWayPoints[self.mileWayPoints.length-1]
+          if (i < 5) {
+            console.log(`${distance} | ${tmp_distance} | ${self.mileWayPoints[self.mileWayPoints.length-1]}`)
+          }
+          self.mileWayPoints.push(distance)
+          origin = new google.maps.LatLng(o.lat(), o.lng());
         });
 
         this.teams.forEach((o, i) => {
-          let index = self.getClosestWayPointIndex(self.mileWayPoints, self.convertStepsToMiles(o.totalSteps))
-          self.placeMarker(index, i);
+          //let index = self.getClosestWayPointIndex(self.mileWayPoints, parseFloat(self.teams[i].totalSteps))
+          self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
+          //self.placeMarker(index, i);
         })
-        // window.foo = this.mileWayPoints;
+      },
+      getClosestPoint: function(totalMiles, teamIndex) {
+        const self = this;
+        $(this.mileWayPoints).each((i, o) => {
+          if (parseInt(totalMiles) >= (parseInt(o) - 5) && parseInt(totalMiles) <= (parseInt(o) + 5)) {
+            self.placeMarker(i, teamIndex);
+            return false;
+          }
+        })
       },
       getDistance: function(p1, p2) {
         var rad = function(x) {
@@ -164,16 +208,50 @@
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
           mapContainer: 'atlas',
           teamName: self.teams[teamIndex].name,
-          totalMiles: self.teams[teamIndex].totalSteps
+          totalMiles: parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
         });
         this.markersArray.push(marker);
         this.setPopoverEvents();
       },
       setPopoverEvents: function() {
-        $('.were-walking-marker').popover();
-        $('.were-walking-marker').on('click', function (e) {
-          $('.were-walking-marker').not(this).popover('hide');
+        $('.were-walking-marker, .start-end-marker').popover();
+        $('.were-walking-marker, .start-end-marker').on('click', function (e) {
+          $('.were-walking-marker, .start-end-marker').not(this).popover('hide');
         });
+      },
+      setStartEndMarkers: function() {
+        const self = this;
+        var startMarker = new google.maps.Marker({
+          position: { lat: 47.603323768014164, lng: -122.3365107178688 },
+        });
+        var endMarker = new google.maps.Marker({
+          position: { lat: 38.8942786, lng: -77.4310992 },
+        });
+        Helpers.createAndAppendDiv({
+          lat: 47.603323768014164,
+          lng: -122.3365107178688,
+          mapInstance: self.map,
+          divId: 'startMarker',
+          backgroundIcon: '',
+          mapContainer: 'atlas',
+          teamName: 'Start',
+          content: '815 Western Ave',
+          className: 'start-end-marker'
+        });
+        Helpers.createAndAppendDiv({
+          lat: 36.1069652,
+          lng: -112.1129972,
+          mapInstance: self.map,
+          divId: 'endMarker',
+          backgroundIcon: '',
+          mapContainer: 'atlas',
+          teamName: 'End',
+          content: 'Grand Canyon National Park - 2,399 Miles!',
+          className: 'start-end-marker'
+        });
+        this.markersStartEndArray.push(startMarker);
+        this.markersStartEndArray.push(endMarker);
+        this.setPopoverEvents();
       }
     }
 
@@ -212,5 +290,17 @@
 
   .popover {
     z-index: 20002 !important;
+  }
+
+  .start-end-marker {
+    width: 20px;
+    height: 20px;
+    border: 6px solid #f5f5f5;
+    background: #05a6f5 !important;
+    border-radius: 20px;
+    z-index: 19999;
+    cursor: pointer;
+    -webkit-box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
+    box-shadow: 0px 3px 3px 3px rgba(0,0,0,.3);
   }
 </style>

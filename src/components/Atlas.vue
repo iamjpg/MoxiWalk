@@ -114,7 +114,7 @@
         this.routePath.setMap(self.map);
         this.map.fitBounds(bounds);
         const polyLengthInMeters = google.maps.geometry.spherical.computeLength(this.routePath.getPath().getArray());
-        this.polyLengthInMiles = Math.round(polyLengthInMeters* 0.00062137);
+        this.polyLengthInMiles = Math.round(polyLengthInMeters * 0.00062137);
       },
       convertStepsToMiles: function(steps) {
         return parseInt(steps) / 2112;
@@ -145,17 +145,16 @@
         this.routePath.getPath().getArray().forEach((o, i) => {
           let tmp_distance = self.getDistance(origin, o);
           distance = tmp_distance + self.mileWayPoints[self.mileWayPoints.length-1]
-          if (i < 5) {
-            console.log(`${distance} | ${tmp_distance} | ${self.mileWayPoints[self.mileWayPoints.length-1]}`)
-          }
           self.mileWayPoints.push(distance)
           origin = new google.maps.LatLng(o.lat(), o.lng());
         });
 
         this.teams.forEach((o, i) => {
-          //let index = self.getClosestWayPointIndex(self.mileWayPoints, parseFloat(self.teams[i].totalSteps))
-          self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
-          //self.placeMarker(index, i);
+          if (i === 2) {
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 0.8), i);
+          } else {
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
+          }
         })
       },
       getClosestPoint: function(totalMiles, teamIndex) {
@@ -208,7 +207,7 @@
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
           mapContainer: 'atlas',
           teamName: self.teams[teamIndex].name,
-          totalMiles: parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
+          totalMiles: (teamIndex === 2) ? parseFloat(self.teams[teamIndex].totalSteps * 0.8).toFixed(2) : parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
         });
         this.markersArray.push(marker);
         this.setPopoverEvents();

@@ -130,10 +130,26 @@
 
         self.mileWayPoints = window.mileWayPoints = [];
 
-        const origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
+        let origin = new google.maps.LatLng(47.6032365, -122.33675619999997);
+        let distance = 0;
+
+        self.mileWayPoints.push(self.getDistance(origin, {
+          lat: function() {
+            return 47.6032365
+          },
+          lng: function() {
+            return -122.33675619999997
+          }
+        }))
 
         this.routePath.getPath().getArray().forEach((o, i) => {
-          self.mileWayPoints.push(self.getDistance(origin, o))
+          let tmp_distance = self.getDistance(origin, o);
+          distance = tmp_distance + self.mileWayPoints[self.mileWayPoints.length-1]
+          if (i < 5) {
+            console.log(`${distance} | ${tmp_distance} | ${self.mileWayPoints[self.mileWayPoints.length-1]}`)
+          }
+          self.mileWayPoints.push(distance)
+          origin = new google.maps.LatLng(o.lat(), o.lng());
         });
 
         this.teams.forEach((o, i) => {
@@ -145,7 +161,7 @@
       getClosestPoint: function(totalMiles, teamIndex) {
         const self = this;
         $(this.mileWayPoints).each((i, o) => {
-          if (parseInt(totalMiles) >= (parseInt(o) - 10) && parseInt(totalMiles) <= (parseInt(o) + 10)) {
+          if (parseInt(totalMiles) >= (parseInt(o) - 5) && parseInt(totalMiles) <= (parseInt(o) + 5)) {
             self.placeMarker(i, teamIndex);
             return false;
           }

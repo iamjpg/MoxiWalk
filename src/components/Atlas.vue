@@ -150,8 +150,10 @@
         });
 
         this.teams.forEach((o, i) => {
-          if (i === 2) {
+          if (i === 2) { // Team of 5
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 0.8), i);
+          } else if (i === 7) { // Team of 3
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 1.25), i);
           } else {
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
           }
@@ -199,6 +201,14 @@
         var marker = new google.maps.Marker({
           position: { lat: self.routePath.getPath().getArray()[pointIndex].lat(), lng: self.routePath.getPath().getArray()[pointIndex].lng() },
         });
+
+        let multiplier = undefined;
+        if (teamIndex === 2) {
+          multiplier = 0.8;
+        } else if (teamIndex === 7) {
+          multiplier = 1.25;
+        }
+
         Helpers.createAndAppendDiv({
           lat: self.routePath.getPath().getArray()[pointIndex].lat(),
           lng: self.routePath.getPath().getArray()[pointIndex].lng(),
@@ -207,7 +217,7 @@
           backgroundIcon: self.teams[teamIndex].backgroundIcon,
           mapContainer: 'atlas',
           teamName: self.teams[teamIndex].name,
-          totalMiles: (teamIndex === 2) ? parseFloat(self.teams[teamIndex].totalSteps * 0.8).toFixed(2) : parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
+          totalMiles: (multiplier) ? parseFloat(self.teams[teamIndex].totalSteps * multiplier).toFixed(2) : parseFloat(self.teams[teamIndex].totalSteps.toFixed(2))
         });
         this.markersArray.push(marker);
         this.setPopoverEvents();

@@ -154,6 +154,8 @@
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 0.8), i);
           } else if (i === 7) { // Team of 3
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 1.25), i);
+          } else if (i === 4) { // Team of 2
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 2), i);
           } else {
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
           }
@@ -207,6 +209,8 @@
           multiplier = 0.8;
         } else if (teamIndex === 7) {
           multiplier = 1.25;
+        } else if (teamIndex === 4) {
+          multiplier = 2;
         }
 
         Helpers.createAndAppendDiv({

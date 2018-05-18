@@ -153,9 +153,11 @@
           if (i === 2) { // Team of 5
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 0.8), i);
           } else if (i === 7) { // Team of 3
-            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 1.25), i);
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 1.33), i);
           } else if (i === 4) { // Team of 2
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 2), i);
+          } else if (i === 0) {
+            self.getClosestPoint(parseFloat(self.teams[i].totalSteps * 0.9), i);
           } else {
             self.getClosestPoint(parseFloat(self.teams[i].totalSteps), i);
           }
@@ -208,9 +210,11 @@
         if (teamIndex === 2) {
           multiplier = 0.8;
         } else if (teamIndex === 7) {
-          multiplier = 1.25;
+          multiplier = 1.33;
         } else if (teamIndex === 4) {
           multiplier = 2;
+        } else if (teamIndex === 0) {
+          multiplier = 0.9;
         }
 
         Helpers.createAndAppendDiv({

@@ -2,7 +2,7 @@
 <div id="loader-container">
   <div id="spinner"></div>
   <div id="loader-message">
-    We're hearding cats, here. Seriously though, we're waiting on 20 waypoints to return from Google for this race. It will load eventually, I promise.
+    Please hold, we're currently herding cats. Seriously though, we're waiting on 20 waypoints to return from Google for this race. It will load eventually, I promise.
   </div>
 </div>
 </template>
